@@ -8,16 +8,47 @@ const currentFrame = index => `assets/images/herosection/ezgif-frame-${(index + 
 
 const images = [];
 const animationState = { frame: 0 };
+let loadedCount = 0;
+const loadingScreen = document.getElementById("loading-screen");
+const loadingCounter = document.getElementById("loading-counter");
+const loadingBar = document.getElementById("loading-bar");
+
+if (loadingScreen) document.body.style.overflow = 'hidden';
 
 // Preload images
 for (let i = 0; i < frameCount; i++) {
     const img = new Image();
+    const handleLoad = () => {
+        loadedCount++;
+        const percent = Math.floor((loadedCount / frameCount) * 100);
+        
+        if (loadingCounter) loadingCounter.innerText = `${percent}%`;
+        if (loadingBar) loadingBar.style.width = `${percent}%`;
+
+        if (loadedCount === frameCount) {
+            // All images loaded
+            if (loadingScreen) {
+                gsap.to(loadingScreen, {
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        loadingScreen.style.display = "none";
+                        document.body.style.overflow = '';
+                        initScrollAnimations();
+                    }
+                });
+            } else {
+                initScrollAnimations();
+            }
+            render();
+        }
+    };
+    img.onload = handleLoad;
+    img.onerror = handleLoad;
     img.src = currentFrame(i);
     images.push(img);
 }
-
-// Ensure the first frame is rendered as soon as it loads
-images[0].onload = render;
 
 let currentWidth = window.innerWidth;
 
@@ -96,16 +127,17 @@ function render() {
     }
 }
 
-// Master Timeline for Hero Sequence
-const tl = gsap.timeline({
-    scrollTrigger: {
-        trigger: "#hero-sequence",
-        start: "top top",
-        end: "+=400%", // 400vh total scroll distance
-        scrub: 0.5, // Smooth scrubbing
-        pin: true,
-    }
-});
+function initScrollAnimations() {
+    // Master Timeline for Hero Sequence
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#hero-sequence",
+            start: "top top",
+            end: "+=400%", // 400vh total scroll distance
+            scrub: 0.5, // Smooth scrubbing
+            pin: true,
+        }
+    });
 
 // Animate frame sequence over the entire timeline duration
 tl.to(animationState, {
@@ -148,3 +180,45 @@ tl.fromTo("#feature-3",
     { opacity: 0, y: -50, duration: 10, ease: "power2.in" }, 
     90 // starts fading out at 90%
 );
+
+    // Global Fade-Up Animations for other sections
+    gsap.utils.toArray('.gsap-fade-up').forEach((elem) => {
+        gsap.fromTo(elem, 
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    });
+
+    // Custom Magnetic Cursor Logic
+    const cursor = document.getElementById('custom-cursor');
+    if (cursor) {
+        let cursorX = gsap.quickTo(cursor, "left", {duration: 0.2, ease: "power3"});
+        let cursorY = gsap.quickTo(cursor, "top", {duration: 0.2, ease: "power3"});
+        
+        window.addEventListener("mousemove", e => {
+            cursorX(e.clientX);
+            cursorY(e.clientY);
+        });
+
+        // Magnetic hover effects
+        const interactiveElements = document.querySelectorAll('a, button, .group, .cursor-pointer');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursor, { scale: 3, opacity: 0.5, duration: 0.3 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 });
+            });
+        });
+    }
+}
