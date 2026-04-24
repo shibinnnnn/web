@@ -60,16 +60,34 @@ function render() {
         const imgRatio = img.width / img.height;
         let drawWidth, drawHeight, offsetX, offsetY;
 
-        if (canvasRatio > imgRatio) {
-            drawWidth = canvas.width;
-            drawHeight = canvas.width / imgRatio;
-            offsetX = 0;
-            offsetY = (canvas.height - drawHeight) / 2;
+        const isMobile = window.innerWidth < 768;
+
+        if (isMobile) {
+            // "Contain" logic on mobile to prevent cropping and improve clarity
+            if (canvasRatio > imgRatio) {
+                drawHeight = canvas.height;
+                drawWidth = canvas.height * imgRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            } else {
+                drawWidth = canvas.width;
+                drawHeight = canvas.width / imgRatio;
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            }
         } else {
-            drawHeight = canvas.height;
-            drawWidth = canvas.height * imgRatio;
-            offsetX = (canvas.width - drawWidth) / 2;
-            offsetY = 0;
+            // "Cover" logic on desktop to fill screen
+            if (canvasRatio > imgRatio) {
+                drawWidth = canvas.width;
+                drawHeight = canvas.width / imgRatio;
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            } else {
+                drawHeight = canvas.height;
+                drawWidth = canvas.height * imgRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            }
         }
 
         context.clearRect(0, 0, canvas.width, canvas.height);
