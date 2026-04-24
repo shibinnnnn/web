@@ -30,7 +30,17 @@ resizeCanvas();
 
 function render() {
     const frameIndex = Math.floor(animationState.frame);
-    const img = images[frameIndex];
+    let img = images[frameIndex];
+
+    // Fallback if current frame isn't fully loaded yet
+    if (!img || !img.complete || img.naturalWidth === 0) {
+        for (let i = frameIndex - 1; i >= 0; i--) {
+            if (images[i] && images[i].complete && images[i].naturalWidth !== 0) {
+                img = images[i];
+                break;
+            }
+        }
+    }
 
     if (img && img.complete && img.naturalWidth !== 0) {
         // Draw image mimicking 'object-fit: cover'
