@@ -73,7 +73,8 @@ function render() {
                 drawWidth = canvas.width;
                 drawHeight = canvas.width / imgRatio;
                 offsetX = 0;
-                offsetY = (canvas.height - drawHeight) / 2;
+                // Move to the top instead of centering
+                offsetY = 0;
             }
         } else {
             // "Cover" logic on desktop to fill screen
