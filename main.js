@@ -19,13 +19,26 @@ for (let i = 0; i < frameCount; i++) {
 // Ensure the first frame is rendered as soon as it loads
 images[0].onload = render;
 
+let currentWidth = window.innerWidth;
+
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Prevent resizing constantly on mobile when address bar hides/shows
+    const dpr = window.devicePixelRatio || 1;
+    
+    // Set physical internal canvas size for crisp rendering
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    
     render();
 }
 
-window.addEventListener("resize", resizeCanvas);
+window.addEventListener("resize", () => {
+    // Only trigger full resize if width changes (ignores mobile vertical scroll jump)
+    if (Math.abs(window.innerWidth - currentWidth) > 50) {
+        currentWidth = window.innerWidth;
+        resizeCanvas();
+    }
+});
 resizeCanvas();
 
 function render() {
@@ -43,21 +56,39 @@ function render() {
     }
 
     if (img && img.complete && img.naturalWidth !== 0) {
-        // Draw image mimicking 'object-fit: cover'
         const canvasRatio = canvas.width / canvas.height;
         const imgRatio = img.width / img.height;
         let drawWidth, drawHeight, offsetX, offsetY;
 
-        if (canvasRatio > imgRatio) {
-            drawWidth = canvas.width;
-            drawHeight = canvas.width / imgRatio;
-            offsetX = 0;
-            offsetY = (canvas.height - drawHeight) / 2;
+        // Use "Contain" logic on mobile to prevent extreme cropping
+        const isMobile = window.innerWidth < 768;
+
+        if (isMobile) {
+            // Fit the entire image width onto the mobile screen (cinematic look with dark bars)
+            if (canvasRatio > imgRatio) {
+                drawHeight = canvas.height;
+                drawWidth = canvas.height * imgRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            } else {
+                drawWidth = canvas.width;
+                drawHeight = canvas.width / imgRatio;
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            }
         } else {
-            drawHeight = canvas.height;
-            drawWidth = canvas.height * imgRatio;
-            offsetX = (canvas.width - drawWidth) / 2;
-            offsetY = 0;
+            // Use "Cover" logic on desktop to fill the entire screen
+            if (canvasRatio > imgRatio) {
+                drawWidth = canvas.width;
+                drawHeight = canvas.width / imgRatio;
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            } else {
+                drawHeight = canvas.height;
+                drawWidth = canvas.height * imgRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            }
         }
 
         context.clearRect(0, 0, canvas.width, canvas.height);
