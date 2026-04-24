@@ -100,38 +100,38 @@
         <div class="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[url('assets/images/herosection/ezgif-frame-001.png')] bg-contain md:bg-cover bg-top md:bg-center bg-no-repeat">
             <canvas id="hero-canvas" class="w-full h-full object-cover relative z-10"></canvas>
             
-            <!-- Dark Overlay for better text legibility -->
-            <div class="absolute inset-0 bg-dark-900/60 z-10"></div>
+            <!-- Mobile Ambilight Glow & Desktop Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-900/90 via-dark-900/60 to-transparent md:bg-none md:bg-dark-900/60 z-10"></div>
 
             <!-- Features Overlay Container -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+            <div class="absolute inset-0 pointer-events-none z-20">
                 
                 <!-- Feature 1 -->
-                <div id="feature-1" class="absolute flex flex-col items-center justify-center opacity-0 text-center px-6">
+                <div id="feature-1" class="absolute bottom-24 w-full md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex flex-col items-center justify-center opacity-0 text-center px-6">
                     <h2 class="text-5xl md:text-7xl font-heading font-bold text-white mb-4 drop-shadow-2xl">
                         Data-Driven <span class="text-brand-500">Insights</span>
                     </h2>
-                    <p class="text-xl md:text-2xl text-gray-200 font-light max-w-2xl drop-shadow-lg">
+                    <p class="text-lg md:text-2xl text-gray-200 font-light max-w-2xl drop-shadow-lg">
                         We analyze every metric to build campaigns that guarantee maximum ROI.
                     </p>
                 </div>
 
                 <!-- Feature 2 -->
-                <div id="feature-2" class="absolute flex flex-col items-center justify-center opacity-0 text-center px-6">
+                <div id="feature-2" class="absolute bottom-24 w-full md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex flex-col items-center justify-center opacity-0 text-center px-6">
                     <h2 class="text-5xl md:text-7xl font-heading font-bold text-white mb-4 drop-shadow-2xl">
                         Creative <span class="text-pink-500">Excellence</span>
                     </h2>
-                    <p class="text-xl md:text-2xl text-gray-200 font-light max-w-2xl drop-shadow-lg">
+                    <p class="text-lg md:text-2xl text-gray-200 font-light max-w-2xl drop-shadow-lg">
                         Award-winning designs that stop the scroll and captivate your audience.
                     </p>
                 </div>
 
                 <!-- Feature 3 -->
-                <div id="feature-3" class="absolute flex flex-col items-center justify-center opacity-0 text-center px-6">
+                <div id="feature-3" class="absolute bottom-24 w-full md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex flex-col items-center justify-center opacity-0 text-center px-6">
                     <h2 class="text-5xl md:text-7xl font-heading font-bold text-white mb-4 drop-shadow-2xl">
                         Seamless <span class="text-brand-400">Growth</span>
                     </h2>
-                    <p class="text-xl md:text-2xl text-gray-200 font-light max-w-2xl drop-shadow-lg">
+                    <p class="text-lg md:text-2xl text-gray-200 font-light max-w-2xl drop-shadow-lg">
                         End-to-end solutions combining code, content, and conversions.
                     </p>
                 </div>
