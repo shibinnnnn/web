@@ -221,4 +221,88 @@ tl.fromTo("#feature-3",
             });
         });
     }
+    // Split Text Typography Animation
+    const splitTextElements = document.querySelectorAll('.gsap-split-text');
+    splitTextElements.forEach(elem => {
+        // Simple word splitter
+        const text = elem.innerText;
+        const words = text.split(' ');
+        elem.innerHTML = '';
+        words.forEach(word => {
+            const wordSpan = document.createElement('span');
+            wordSpan.innerText = word + ' ';
+            wordSpan.style.display = 'inline-block';
+            wordSpan.style.opacity = '0';
+            wordSpan.style.transform = 'translateY(20px)';
+            elem.appendChild(wordSpan);
+        });
+
+        // Animate the words
+        gsap.to(elem.children, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.05,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: elem,
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+            }
+        });
+    });
+
+    // Mobile Menu Logic
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    let isMenuOpen = false;
+
+    if (mobileMenuBtn && mobileMenuOverlay) {
+        mobileMenuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            
+            if (isMenuOpen) {
+                // Open menu
+                mobileMenuIcon.classList.remove('ph-list');
+                mobileMenuIcon.classList.add('ph-x');
+                mobileMenuOverlay.classList.remove('hidden');
+                mobileMenuOverlay.classList.add('flex');
+                document.body.style.overflow = 'hidden'; // lock scrolling
+
+                gsap.fromTo(mobileMenuOverlay, 
+                    { opacity: 0 }, 
+                    { opacity: 1, duration: 0.3, ease: "power2.out" }
+                );
+
+                gsap.fromTo(mobileNavLinks, 
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, ease: "power3.out", delay: 0.1 }
+                );
+            } else {
+                // Close menu
+                mobileMenuIcon.classList.remove('ph-x');
+                mobileMenuIcon.classList.add('ph-list');
+                document.body.style.overflow = ''; // unlock scrolling
+                
+                gsap.to(mobileMenuOverlay, {
+                    opacity: 0, 
+                    duration: 0.3, 
+                    ease: "power2.in",
+                    onComplete: () => {
+                        mobileMenuOverlay.classList.add('hidden');
+                        mobileMenuOverlay.classList.remove('flex');
+                    }
+                });
+            }
+        });
+
+        // Close menu when a link is clicked
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.click();
+            });
+        });
+    }
 }
