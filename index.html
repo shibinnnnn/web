@@ -110,6 +110,11 @@
     </style>
 </head>
 <body class="antialiased font-sans selection:bg-brand-500 selection:text-white">
+    <!-- Glowing Scroll Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-[3px] z-[110] bg-transparent pointer-events-none">
+        <div id="scroll-progress-bar" class="h-full bg-gradient-to-r from-brand-600 via-brand-400 to-accent-400 origin-left scale-x-0 shadow-[0_0_15px_rgba(47,179,144,0.9)]"></div>
+    </div>
+
     <!-- Custom Magnetic Cursor -->
     <div id="custom-cursor" class="hidden md:block fixed top-0 left-0 w-4 h-4 bg-brand-500 rounded-full pointer-events-none z-[100] mix-blend-screen transition-transform duration-75 -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_rgba(20,145,113,0.8)]"></div>
 

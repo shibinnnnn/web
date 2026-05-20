@@ -402,4 +402,19 @@ tl.fromTo("#feature-3",
             }
         });
     });
+
+    // Glowing Scroll Progress Bar
+    const scrollProgressBar = document.getElementById('scroll-progress-bar');
+    if (scrollProgressBar) {
+        gsap.to(scrollProgressBar, {
+            scaleX: 1,
+            ease: "none",
+            scrollTrigger: {
+                trigger: document.documentElement,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 0.2
+            }
+        });
+    }
 }
