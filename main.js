@@ -332,4 +332,18 @@ tl.fromTo("#feature-3",
             });
         });
     }
+
+    // Back to Top Button Logic
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        ScrollTrigger.create({
+            start: "top -800", // Wait until scrolled down 800px
+            onEnter: () => gsap.to(backToTopBtn, {opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.4, ease: 'power2.out'}),
+            onLeaveBack: () => gsap.to(backToTopBtn, {opacity: 0, y: 40, pointerEvents: 'none', duration: 0.3, ease: 'power2.in'})
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 }
