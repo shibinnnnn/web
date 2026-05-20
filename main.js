@@ -443,4 +443,19 @@ tl.fromTo("#feature-3",
             });
         });
     });
+
+    // Sticky Stacking Sections
+    const stackSections = document.querySelectorAll('.gsap-stack-section');
+    stackSections.forEach((sec, i) => {
+        // We don't pin the last section in the array
+        if (i !== stackSections.length - 1) {
+            ScrollTrigger.create({
+                trigger: sec,
+                // Pin at top if shorter than viewport, else pin when bottom reaches bottom of viewport
+                start: () => sec.offsetHeight < window.innerHeight ? "top top" : "bottom bottom",
+                pin: true,
+                pinSpacing: false
+            });
+        }
+    });
 }
