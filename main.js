@@ -252,6 +252,33 @@ tl.fromTo("#feature-3",
         });
     });
 
+    // Apple-Style Scrub Text Reveal
+    const scrubTextElements = document.querySelectorAll('.gsap-scrub-text');
+    scrubTextElements.forEach(elem => {
+        const text = elem.innerText;
+        const words = text.split(' ');
+        elem.innerHTML = '';
+        words.forEach(word => {
+            const wordSpan = document.createElement('span');
+            wordSpan.innerText = word + ' ';
+            wordSpan.style.color = '#ffffff';
+            wordSpan.style.opacity = '0.2';
+            elem.appendChild(wordSpan);
+        });
+
+        gsap.to(elem.children, {
+            opacity: 1,
+            stagger: 0.1,
+            ease: "none",
+            scrollTrigger: {
+                trigger: elem,
+                start: "top 80%",
+                end: "bottom 40%",
+                scrub: true,
+            }
+        });
+    });
+
     // Mobile Menu Logic
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenuIcon = document.getElementById('mobile-menu-icon');
